@@ -1,10 +1,9 @@
 """Обработка платежей."""
-import asyncio
 import logging
 
 from aiogram import Router
-from aiogram.filters import PreCheckoutQueryFilter
-from aiogram.types import Message, PreCheckoutQuery, SuccessfulPayment
+from aiogram.types import CallbackQuery, Message, PreCheckoutQuery, SuccessfulPayment
+from aiogram.utils.i18n import gettext as _
 
 from src.database import Payment
 from src.services.payment_service import (
