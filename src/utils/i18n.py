@@ -2,9 +2,11 @@
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Callable, Dict
 
-from aiogram.utils.i18n import I18n, I18nMiddleware
+from aiogram import BaseMiddleware
+from aiogram.types import TelegramObject
+from aiogram.utils.i18n import I18n
 from gettext import GNUTranslations
 
 from src.config import get_settings
@@ -82,6 +84,43 @@ def get_i18n() -> I18n:
             path=str(locales_path), default_locale=settings.DEFAULT_LOCALE
         )
     return _i18n_instance
+
+
+class I18nMiddleware(BaseMiddleware):
+    """Middleware для локализации."""
+
+    def __init__(self, i18n: I18n):
+        self.i18n = i18n
+
+    async def __call__(
+        self,
+        handler: Callable,
+        event: TelegramObject,
+        data: dict,
+    ):
+        """Установить локаль для обработчика."""
+        # Получить язык пользователя
+        user = None
+        if hasattr(event, "from_user") and event.from_user:
+            user = event.from_user
+        elif hasattr(event, "message") and event.message and event.message.from_user:
+            user = event.message.from_user
+        elif hasattr(event, "callback_query") and event.callback_query:
+            user = event.callback_query.from_user
+
+        if user:
+            # Получить язык из БД или использовать язык пользователя
+            from src.database import BotUser
+            db_user = BotUser.get_or_create(user.id)
+            language = db_user.get("language") or user.language_code or "ru"
+            
+            # Установить локаль
+            self.i18n.set_locale(language)
+        else:
+            # Использовать локаль по умолчанию
+            self.i18n.set_locale(get_settings().DEFAULT_LOCALE)
+
+        return await handler(event, data)
 
 
 def get_i18n_middleware() -> I18nMiddleware:

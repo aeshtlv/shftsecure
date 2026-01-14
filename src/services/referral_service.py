@@ -1,13 +1,15 @@
 """Сервис реферальной программы."""
 from datetime import datetime, timedelta
 
+from aiogram import Bot
+
+from src.config import get_settings
 from src.database import BotUser, Referral
 from src.services.api_client import RemnawaveApiClient
 from src.services.notification_service import notify_referral_bonus
-from src.config import get_settings
 
 
-async def grant_referral_bonus(bot, referred_user_id: int):
+async def grant_referral_bonus(bot: Bot, referred_user_id: int):
     """Начислить бонус рефереру."""
     # Получить пользователя из БД
     user = BotUser.get_or_create(referred_user_id)
