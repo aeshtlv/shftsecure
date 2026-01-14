@@ -261,11 +261,7 @@ async def user_set_language(callback: CallbackQuery):
 
     BotUser.update_language(user_id, lang)
 
-    # Обновить локаль
-    from src.utils.i18n import get_i18n
-    i18n = get_i18n()
-    i18n.set_locale(lang)
-
+    # Локаль будет применена автоматически через middleware при следующем запросе
     await callback.answer(t("user.language_changed"))
     await user_settings(callback)
 

@@ -113,14 +113,13 @@ class I18nMiddleware(BaseMiddleware):
             from src.database import BotUser
             db_user = BotUser.get_or_create(user.id)
             language = db_user.get("language") or user.language_code or "ru"
-            
-            # Установить локаль
-            self.i18n.set_locale(language)
         else:
             # Использовать локаль по умолчанию
-            self.i18n.set_locale(get_settings().DEFAULT_LOCALE)
+            language = get_settings().DEFAULT_LOCALE
 
-        return await handler(event, data)
+        # Использовать локаль через контекстный менеджер
+        async with self.i18n.use_locale(language):
+            return await handler(event, data)
 
 
 def get_i18n_middleware() -> I18nMiddleware:
