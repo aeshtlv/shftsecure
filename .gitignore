@@ -32,6 +32,7 @@ wheels/
 *.sqlite
 *.sqlite3
 bot_data.db
+data/
 
 # IDE
 .vscode/

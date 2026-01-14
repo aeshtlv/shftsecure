@@ -6,7 +6,7 @@ services:
     env_file:
       - .env
     volumes:
-      - ./bot_data.db:/app/bot_data.db
+      - ./data:/app/data
     networks:
       - remnawave-network
 

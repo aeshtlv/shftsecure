@@ -1,16 +1,28 @@
 """База данных SQLite."""
+import os
 import sqlite3
 from contextlib import contextmanager
 from datetime import datetime
+from pathlib import Path
 from typing import List, Optional, Tuple
 
 from src.config import get_settings
+
+# Путь к базе данных
+DB_PATH = os.getenv("DB_PATH", "data/bot_data.db")
+
+
+def _ensure_db_dir():
+    """Убедиться, что директория для БД существует."""
+    db_dir = Path(DB_PATH).parent
+    db_dir.mkdir(parents=True, exist_ok=True)
 
 
 @contextmanager
 def get_db_connection():
     """Контекстный менеджер для работы с БД."""
-    conn = sqlite3.connect("bot_data.db")
+    _ensure_db_dir()
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     try:
         yield conn
