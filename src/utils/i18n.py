@@ -41,17 +41,17 @@ class JsonI18n(I18n):
     """Загрузчик локализации из JSON."""
 
     def __init__(self, path: str, default_locale: str = "ru"):
-        self.path = Path(path)
+        self._path = Path(path)  # Сохраняем Path объект отдельно
         self.default_locale = default_locale
-        super().__init__(path=str(self.path), default_locale=default_locale)
+        super().__init__(path=str(self._path), default_locale=default_locale)
 
     def find_locales(self) -> Dict[str, Any]:
         """Найти доступные локали."""
         locales = {}
-        if not self.path.exists():
+        if not self._path.exists():
             return locales
 
-        for locale_dir in self.path.iterdir():
+        for locale_dir in self._path.iterdir():
             if not locale_dir.is_dir():
                 continue
 
