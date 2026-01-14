@@ -4,7 +4,7 @@ import os
 from functools import lru_cache
 from typing import List, Optional
 
-from pydantic import Field
+from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -48,6 +48,19 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         case_sensitive=True,
     )
+
+    @field_validator("NOTIFICATIONS_CHAT_ID", "NOTIFICATIONS_TOPIC_ID", mode="before")
+    @classmethod
+    def parse_optional_int(cls, v):
+        """Преобразовать пустую строку в None для опциональных int полей."""
+        if v == "" or v is None:
+            return None
+        if isinstance(v, str):
+            try:
+                return int(v)
+            except ValueError:
+                return None
+        return v
 
     @property
     def admin_ids(self) -> List[int]:
