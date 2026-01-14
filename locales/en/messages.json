@@ -1,0 +1,91 @@
+{
+  "admin": {
+    "welcome": "👋 Welcome to RemnaBuy admin panel!",
+    "help": "📖 Admin commands help"
+  },
+  "user": {
+    "welcome": "👋 Welcome to RemnaBuy!\n\nChoose an action:",
+    "connect_menu": "🔗 Connect access\n\nChoose a plan:",
+    "no_subscription": "❌ You don't have an active subscription.",
+    "subscription_info": "📋 Subscription information\n\nExpires: `{expire_at}`",
+    "error": "❌ An error occurred. Please try again later.",
+    "settings": "⚙️ Settings\n\nLanguage: `{language}`\nAuto-renewal: `{auto_renewal}`\n\nReferral link:\n`{referral_link}`",
+    "select_language": "🌍 Select language:",
+    "language_changed": "✅ Language changed",
+    "change_language": "🌍 Change language",
+    "toggle_auto_renewal": "🔄 Auto-renewal",
+    "auto_renewal_enabled": "✅ Auto-renewal enabled",
+    "auto_renewal_disabled": "❌ Auto-renewal disabled",
+    "referral": "🎁 Referral program",
+    "referral_info": "🎁 Referral program\n\nReferrals: `{referrals_count}`\nBonus days: `{bonus_days}`\n\nYour referral link:\n`{referral_link}`",
+    "support": "💬 Support\n\nContact the administrator for questions."
+  },
+  "user_menu": {
+    "connect": "🔗 Connect access",
+    "my_access": "📋 My access",
+    "settings": "⚙️ Settings",
+    "support": "💬 Support"
+  },
+  "subscription": {
+    "1month": "1 month",
+    "3months": "3 months",
+    "6months": "6 months",
+    "12months": "12 months"
+  },
+  "payment": {
+    "stars": "⭐ Telegram Stars",
+    "yookassa": "💳 YooKassa",
+    "sbp": "📱 SBP (QR code)",
+    "card": "💳 Bank card"
+  },
+  "purchase": {
+    "select_method": "💳 Select payment method for {months} month(s) subscription:",
+    "stars_payment": "⭐ Payment via Telegram Stars\n\nLink: {link}",
+    "yookassa_select_method": "💳 Select YooKassa payment method:",
+    "enter_promo": "🎫 Enter promo code:",
+    "apply_promo": "✅ Apply promo code",
+    "promo_info": "🎫 Promo code: `{code}`\nDiscount: `{discount}%`\nBonus days: `{bonus_days}`",
+    "sbp_qr": "📱 Scan QR code to pay via SBP",
+    "card_payment": "💳 Bank card payment\n\nLink: {url}",
+    "error": "❌ An error occurred while creating payment"
+  },
+  "payment": {
+    "success": "✅ Payment processed successfully!\n\nSubscription expires: `{expire_at}`",
+    "success_short": "✅ Paid",
+    "error": "❌ Payment processing error"
+  },
+  "trial": {
+    "activating": "⏳ Activating trial subscription...",
+    "already_used": "❌ Trial subscription already used",
+    "success": "✅ Trial subscription activated!\n\nPeriod: {days} days\n\n🔗 {link}",
+    "success_no_link": "✅ Trial subscription activated!\n\nPeriod: {days} days",
+    "error": "❌ Trial subscription activation error"
+  },
+  "renewal": {
+    "early": "⏰ Your subscription expires in {days} days. Renew access now!",
+    "urgent": "⚠️ Your subscription expires tomorrow! Renew access!",
+    "expired": "❌ Your subscription expired {expire_at}. Resume access!",
+    "renew": "🔄 Renew access",
+    "resume": "▶️ Resume access"
+  },
+  "nav": {
+    "back": "◀️ Back",
+    "main": "🏠 Main menu"
+  },
+  "menu": {
+    "section": {
+      "users": "👥 Users",
+      "nodes": "🖥 Nodes",
+      "hosts": "🌐 Hosts",
+      "resources": "📦 Resources",
+      "billing": "💰 Billing",
+      "bulk": "📊 Bulk operations",
+      "system": "⚙️ System"
+    }
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No"
+  }
+}
+

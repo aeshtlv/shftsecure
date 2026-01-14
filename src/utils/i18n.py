@@ -1,0 +1,90 @@
+"""Локализация."""
+import json
+import os
+from pathlib import Path
+from typing import Any, Dict
+
+from aiogram.utils.i18n import I18n, I18nMiddleware
+from gettext import GNUTranslations
+
+from src.config import get_settings
+
+
+class JsonTranslations(GNUTranslations):
+    """Обертка для gettext с поддержкой JSON."""
+
+    def __init__(self, translations: Dict[str, Any]):
+        self._catalog = translations
+        self._fallback = None
+
+    def gettext(self, message: str) -> str:
+        """Получить перевод."""
+        # Поддержка вложенных ключей через точку
+        keys = message.split(".")
+        value = self._catalog
+        for key in keys:
+            if isinstance(value, dict):
+                value = value.get(key)
+            else:
+                break
+
+        if value and isinstance(value, str):
+            return value
+        return message
+
+    def ngettext(self, msgid1: str, msgid2: str, n: int) -> str:
+        """Получить перевод с учетом числа."""
+        return self.gettext(msgid1 if n == 1 else msgid2)
+
+
+class JsonI18n(I18n):
+    """Загрузчик локализации из JSON."""
+
+    def __init__(self, path: str, default_locale: str = "ru"):
+        self.path = Path(path)
+        self.default_locale = default_locale
+        super().__init__(path=str(self.path), default_locale=default_locale)
+
+    def find_locales(self) -> Dict[str, Any]:
+        """Найти доступные локали."""
+        locales = {}
+        if not self.path.exists():
+            return locales
+
+        for locale_dir in self.path.iterdir():
+            if not locale_dir.is_dir():
+                continue
+
+            locale = locale_dir.name
+            messages_file = locale_dir / "messages.json"
+
+            if messages_file.exists():
+                try:
+                    with open(messages_file, "r", encoding="utf-8") as f:
+                        translations = json.load(f)
+                        locales[locale] = JsonTranslations(translations)
+                except Exception:
+                    pass
+
+        return locales
+
+
+_i18n_instance: I18n = None
+
+
+def get_i18n() -> I18n:
+    """Получить экземпляр I18n."""
+    global _i18n_instance
+    if _i18n_instance is None:
+        settings = get_settings()
+        locales_path = Path(__file__).parent.parent.parent / "locales"
+        _i18n_instance = JsonI18n(
+            path=str(locales_path), default_locale=settings.DEFAULT_LOCALE
+        )
+    return _i18n_instance
+
+
+def get_i18n_middleware() -> I18nMiddleware:
+    """Получить middleware для локализации."""
+    return I18nMiddleware(get_i18n())
+
